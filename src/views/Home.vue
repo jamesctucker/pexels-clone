@@ -6,21 +6,27 @@
       </button>
     </section>
     <section class="results-section">
-      <div
-        class="image-wrapper"
-        v-for="photo in results.photos"
-        :key="photo.id"
-      >
-        <img
-          class="image"
-          :src="photo.src.medium"
-          :alt="`photo of ${searchTerm}`"
-          @click="favoritePhoto(photo)"
-        />
-        <span class="like-btn" v-if="favoritedPhotos.includes(photo.id)"
-          >❤️</span
+      <div v-if="results.length > 0">
+        <div
+          class="image-wrapper"
+          v-for="photo in results.photos"
+          :key="photo.id"
         >
-        <span class="like-btn" v-else>🤍</span>
+          <img
+            class="image"
+            :src="photo.src.large"
+            :alt="`photo of ${searchTerm}`"
+            loading="lazy"
+            @click="favoritePhoto(photo)"
+          />
+          <span class="like-btn" v-if="favoritedPhotos.includes(photo.id)"
+            >❤️</span
+          >
+          <span class="like-btn" v-else>🤍</span>
+        </div>
+      </div>
+      <div v-else>
+        <p>search for photos!</p>
       </div>
     </section>
   </div>
@@ -45,7 +51,7 @@ export default {
       const client = createClient(key);
       const query = this.searchTerm;
 
-      client.photos.search({ query, per_page: 10 }).then((photos) => {
+      client.photos.search({ query, per_page: 50 }).then((photos) => {
         console.log(photos);
         this.results = photos;
       });
@@ -83,9 +89,9 @@ export default {
 
 .image-wrapper {
   flex-grow: 1;
-  flex-basis: 150px;
-  max-width: 250px;
-  margin: 1px;
+  flex-basis: 200px;
+  max-width: 450px;
+  margin: 0.25rem;
   position: relative;
 }
 
