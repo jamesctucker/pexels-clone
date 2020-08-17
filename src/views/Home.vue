@@ -5,29 +5,27 @@
         Search
       </button>
     </section>
-    <section class="results-section">
-      <div v-if="results.length > 0">
-        <div
-          class="image-wrapper"
-          v-for="photo in results.photos"
-          :key="photo.id"
+    <section v-if="results.photos" class="results-section">
+      <div
+        class="image-wrapper"
+        v-for="photo in results.photos"
+        :key="photo.id"
+      >
+        <img
+          class="image"
+          :src="photo.src.large"
+          :alt="`photo of ${searchTerm}`"
+          loading="lazy"
+          @click="favoritePhoto(photo)"
+        />
+        <span class="like-btn" v-if="favoritedPhotos.includes(photo.id)"
+          >❤️</span
         >
-          <img
-            class="image"
-            :src="photo.src.large"
-            :alt="`photo of ${searchTerm}`"
-            loading="lazy"
-            @click="favoritePhoto(photo)"
-          />
-          <span class="like-btn" v-if="favoritedPhotos.includes(photo.id)"
-            >❤️</span
-          >
-          <span class="like-btn" v-else>🤍</span>
-        </div>
+        <span class="like-btn" v-else>🤍</span>
       </div>
-      <div v-else>
-        <p>search for photos!</p>
-      </div>
+    </section>
+    <section v-else>
+      search for a photo!
     </section>
   </div>
 </template>
